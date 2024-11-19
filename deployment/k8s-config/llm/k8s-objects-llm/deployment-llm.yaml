@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: generator 
+  namespace: gen
+  labels:
+    app: generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: generator
+  template:
+    metadata:
+      labels:
+        app: generator
+    spec:
+      containers:
+      - name: generator
+        image: localhost:5000/generator:1.0.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /data/application
+          name: volume
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: pvc-app-generator

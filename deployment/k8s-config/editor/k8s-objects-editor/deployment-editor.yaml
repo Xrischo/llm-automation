@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: editor 
+  namespace: edit
+  labels:
+    app: editor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: editor
+  template:
+    metadata:
+      labels:
+        app: editor
+    spec:
+      containers:
+      - name: editor
+        image: localhost:5000/editor:1.0.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /data/application
+          name: volume
+      volumes:
+      - name: volume
+        persistentVolumeClaim:
+          claimName: pvc-app-editor
